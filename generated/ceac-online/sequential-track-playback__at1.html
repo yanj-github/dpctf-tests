@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Regular Playback of Chunked Content</title>
+    <title>Sequential Track Playback</title>
     <link rel="stylesheet" href="../lib/style.css" />
     <script src="/resources/testharness.js"></script>
     <script src="/resources/testharnessreport.js"></script>
@@ -37,11 +37,11 @@
     <script>
       // Global variables
       var TEST_INFO = {
-        id: "regular-playback-of-chunked-content",
-        title: "Regular Playback of Chunked Content",
+        id: "sequential-track-playback",
+        title: "Sequential Track Playback",
         description:
-          "Sequential Chunked Playback refers to the case that a CMAF/WAVE track is played from the beginning by providing CMAF chunks to the source buffer after initialization.",
-        code: "regular-playback-of-chunked-content.html",
+          "Sequential track playback refers to the case that a CMAF/WAVE track is played from the beginning by providing CMAF fragments to the source buffer after initialization.",
+        code: "sequential-track-playback.html",
       };
 
       var video = document.querySelector("video");
@@ -49,7 +49,7 @@
       var statusText = document.getElementById("status-text");
 
       var videoContentModel = [];
-      var audioContentModel = ["/content/ceac_sets/eac3/at2/2023-08-01/stream.mpd"];
+      var audioContentModel = ["https://dash.akamaized.net/WAVE/vectors/releases/1/ceac_sets/eac3/at1/2023-11-08/stream.mpd"];
 
       var dpctfTest = new DpctfTest({
         testInfo: TEST_INFO,
@@ -66,7 +66,6 @@
       function executeTest(player, done, parameters) {
         var minBufferDuration = parameters.minBufferDuration / 1000;
         player.startBuffering();
-        player.playOnBufferLoaded(minBufferDuration).then(done);
 
         dpctfTest.asyncTest(function (test) {
           var query = location.search.replace(/\?/, "");
@@ -78,6 +77,8 @@
             test.done();
           });
         }, "video ended event fired");
+
+        player.playOnBufferLoaded(minBufferDuration).then(done);
       }
     </script>
   </body>
